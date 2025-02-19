@@ -24,11 +24,26 @@ repositories {
 }
 
 dependencies {
+    // Web, JPA и валидация
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Liquibase для контроля схемы БД (без XML, changelog в YAML)
+    implementation 'org.liquibase:liquibase-core'
+
+    // PostgreSQL драйвер
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // Spring AOP для аспектов
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Тестирование
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {

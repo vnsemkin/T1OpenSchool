@@ -1,1 +1,15 @@
-spring.application.name: T1OpenSchool
+spring:
+  application.name: T1OpenSchool
+  datasource:
+    url: jdbc:postgresql://localhost:5432/t1open-school-db
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog.yml
+logging:
+  level:
+    root: INFO

@@ -1,0 +1,28 @@
+name: my-t1open-school
+services:
+  t1open-school-db:
+    image: postgres:17
+    container_name: t1open-school-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: t1open-school-db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      t1open-school:
+        aliases:
+          - "t1open-school-db"
+volumes:
+  postgres_data:
+networks:
+  t1open-school:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.55.1.0/24
