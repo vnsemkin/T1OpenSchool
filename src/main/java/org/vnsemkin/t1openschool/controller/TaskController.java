@@ -1,17 +1,15 @@
 package org.vnsemkin.t1openschool.controller;
 
 import jakarta.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.vnsemkin.t1openschool.dto.TaskDTO;
 import org.vnsemkin.t1openschool.mapper.TaskMapper;
-import org.vnsemkin.t1openschool.entity.Task;
 import org.vnsemkin.t1openschool.service.TaskService;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -24,8 +22,7 @@ public class TaskController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public TaskDTO createTask(@Valid @RequestBody TaskDTO taskDTO) {
-    Task created = taskService.createTask(TaskMapper.toEntity(taskDTO));
-    return TaskMapper.toDTO(created);
+    return TaskMapper.toDTO(taskService.createTask(TaskMapper.toEntity(taskDTO)));
   }
 
   // GET /tasks/{id} — получение задачи по ID.

@@ -150,7 +150,6 @@ Request Body (TaskDTO):
 
 Json
 {
-"id": 1,
 "title": "Обновленная задача",
 "description": "Новое описание",
 "userId": 123
