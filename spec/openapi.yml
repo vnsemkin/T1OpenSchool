@@ -1,0 +1,131 @@
+openapi: 3.0.3
+info:
+  title: T1OpenSchool Task Service
+  version: 1.0.0
+  description: |
+    Simple RESTful service for managing tasks with logging via Aspects.
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /api/v1/tasks:
+    get:
+      summary: Get tasks (pagination by page & limit)
+      description: |
+        Возвращает список задач.
+        Параметры: `page` (номер страницы, по умолчанию 0) и `limit` (количество элементов на страницу, по умолчанию 10).
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Номер страницы
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+          description: Количество элементов на страницу
+      responses:
+        '200':
+          description: Список задач
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskDTO'
+    post:
+      summary: Create a new task
+      description: Создает новую задачу
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskDTO'
+      responses:
+        '201':
+          description: Задача создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDTO'
+  /api/v1/tasks/{id}:
+    get:
+      summary: Get task by ID
+      description: Возвращает задачу по её идентификатору
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор задачи
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Задача найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDTO'
+        '404':
+          description: Задача не найдена
+    put:
+      summary: Update an existing task
+      description: Обновляет существующую задачу по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор задачи
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskDTO'
+      responses:
+        '200':
+          description: Задача обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDTO'
+        '404':
+          description: Задача не найдена
+    delete:
+      summary: Delete task
+      description: Удаляет задачу по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор задачи
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Задача удалена
+        '404':
+          description: Задача не найдена
+components:
+  schemas:
+    TaskDTO:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Заголовок задачи
+        description:
+          type: string
+          description: Описание задачи
+        userId:
+          type: integer
+          description: Идентификатор пользователя
+      required:
+        - title
+        - userId
