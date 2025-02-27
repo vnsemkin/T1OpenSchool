@@ -1,15 +1,74 @@
 spring:
   application.name: T1OpenSchool
+
+  # Существующие настройки PostgreSQL
   datasource:
     url: jdbc:postgresql://localhost:5432/t1open-school-db
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+
+  # Настройки JPA
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: true
+
+  # Настройки Liquibase
   liquibase:
     change-log: classpath:db/changelog/db.changelog.yml
-logging:
-  level:
-    root: INFO
+
+  # Настройки Kafka
+  kafka:
+    # Общие настройки
+    bootstrap-servers: localhost:9092
+    topic: t1open-school-notification-topic
+
+    # Настройки producer
+    producer:
+      # Идемпотентность - предотвращает дублирование сообщений
+      properties:
+        enable.idempotence: true
+        acks: all
+        retries: 2147483647  # Integer.MAX_VALUE
+        max.in.flight.requests.per.connection: 5
+
+      # Настройки сериализации
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    # Настройки consumer
+    consumer:
+      # Управление смещениями (offsets)
+      enable-auto-commit: false  # Отключаем автоматический коммит
+      auto-offset-reset: earliest  # Начинаем читать с самого начала, если нет сохраненного смещения
+
+      # Идентификатор группы потребителей - важно для управления смещениями
+      group-id: t1open-school-notification-group
+
+      # Настройки десериализации
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+    # Настройки для ручного подтверждения сообщений
+    listener:
+      ack-mode: MANUAL_IMMEDIATE  # Требуется явное подтверждение через acknowledgment.acknowledge()
+      concurrency: 1  # Количество потоков-потребителей
+
+  # Настройки для отправки уведомлений
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_PASSWORD}  # пароль приложения
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+
+# Настройки для отправки уведомлений
+notification:
+  recipient: vnsemkin@gmail.com

@@ -15,6 +15,7 @@ public class GlobalExceptionHandler {
   private static final String ERROR = "error";
   private static final String TASK_NOT_FOUND = "Task с id %d не найден.";
   private static final String UNHANDLED_EXCEPTION = "Unhandled exception: {}";
+  private static final String INVALID_TASK_STATUS = "Неверное значение статуса: {}";
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -37,6 +38,12 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public String handleTaskNotFoundException(TaskNotFoundException ex) {
     return handleException(ex, TASK_NOT_FOUND);
+  }
+
+  @ExceptionHandler(InvalidTaskStatusException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public String handleInvalidTaskStatusException(InvalidTaskStatusException ex) {
+    return handleException(ex, INVALID_TASK_STATUS);
   }
 
   private String handleException(@NonNull Exception ex, @NonNull String message) {

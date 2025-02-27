@@ -35,8 +35,14 @@ dependencies {
     // PostgreSQL драйвер
     runtimeOnly 'org.postgresql:postgresql'
 
-    // Spring AOP для аспектов
+    // Spring AOP для логирования
     implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    // Kafka
+    implementation 'org.springframework.kafka:spring-kafka:3.3.3'
+
+    // Spring Boot Email
+    implementation 'org.springframework.boot:spring-boot-starter-mail:3.4.3'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
