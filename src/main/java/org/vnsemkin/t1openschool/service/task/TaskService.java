@@ -1,4 +1,4 @@
-package org.vnsemkin.t1openschool.service;
+package org.vnsemkin.t1openschool.service.task;
 
 import org.vnsemkin.t1openschool.entity.Task;
 import org.springframework.data.domain.Pageable;

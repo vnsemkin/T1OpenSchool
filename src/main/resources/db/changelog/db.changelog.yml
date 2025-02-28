@@ -26,3 +26,9 @@ databaseChangeLog:
                   type: BIGINT
                   constraints:
                     nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(50)
+                  defaultValue: NEW
+                  constraints:
+                    nullable: false

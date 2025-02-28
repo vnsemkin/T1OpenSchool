@@ -2,6 +2,7 @@ package org.vnsemkin.t1openschool.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.vnsemkin.t1openschool.constant.TaskStatus;
 
 @Getter
 @Setter
@@ -19,4 +20,6 @@ public class Task {
 
   @Column(name = "user_id")
   private Long userId;
+
+  private TaskStatus status;
 }
