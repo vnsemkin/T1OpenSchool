@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.vnsemkin.t1openschool.dto.TaskDTO;
 import org.vnsemkin.t1openschool.mapper.TaskMapper;
-import org.vnsemkin.t1openschool.service.TaskService;
+import org.vnsemkin.t1openschool.service.task.TaskService;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
