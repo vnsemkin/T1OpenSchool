@@ -3,7 +3,7 @@ package org.vnsemkin.t1openschool.service.task.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.lang.NonNull;
@@ -24,9 +24,7 @@ public class TaskServiceImpl implements TaskService {
 
   private static final String TASK_NOT_FOUND = "Task с id %d не найден.";
 
-  @Value("${spring.kafka.topic}")
-  private String topic;
-
+  private final NewTopic taskStatusTopic;
   private final TaskRepository taskRepository;
   private final KafkaTemplate<String, TaskStatusMessage> taskStatusKafkaTemplate;
 
@@ -87,7 +85,7 @@ public class TaskServiceImpl implements TaskService {
             .build();
     // Отправляем сообщение в Kafka
     try {
-      taskStatusKafkaTemplate.send(topic, message);
+      taskStatusKafkaTemplate.send(taskStatusTopic.name(), message);
       log.info(
           "Kafka message sent for task id {} with new status {}",
           updatedTask.getId(),

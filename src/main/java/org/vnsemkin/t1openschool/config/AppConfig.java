@@ -1,34 +1,29 @@
 package org.vnsemkin.t1openschool.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import java.util.Properties;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import java.util.Properties;
-
 @Configuration
+@RequiredArgsConstructor
 public class AppConfig {
-  @Value("${spring.mail.host}")
-  private String mailHost;
-
-  @Value("${spring.mail.port}")
-  private int mailPort;
-
-  @Value("${spring.mail.username}")
-  private String mailUsername;
-
-  @Value("${spring.mail.password}")
-  private String mailPassword;
 
   @Bean
-  public JavaMailSender javaMailSender() {
+  public MailProperties mailProperties() {
+    return new MailProperties();
+  }
+
+  @Bean
+  public JavaMailSender javaMailSender(MailProperties mailProperties) {
     JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-    mailSender.setHost(mailHost);
-    mailSender.setPort(mailPort);
-    mailSender.setUsername(mailUsername);
-    mailSender.setPassword(mailPassword);
+    mailSender.setHost(mailProperties.getHost());
+    mailSender.setPort(mailProperties.getPort());
+    mailSender.setUsername(mailProperties.getUsername());
+    mailSender.setPassword(mailProperties.getPassword());
 
     Properties props = mailSender.getJavaMailProperties();
     props.put("mail.debug", "true");

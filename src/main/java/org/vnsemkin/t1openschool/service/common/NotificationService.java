@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,9 +18,7 @@ import org.vnsemkin.t1openschool.model.TaskStatusMessage;
 public class NotificationService {
 
   private final JavaMailSender mailSender;
-
-  @Value("${spring.mail.username}")
-  private String from;
+  private final MailProperties mailProperties;
 
   @Value("${notification.recipient:vnsemkin@gmail.com}")
   private String recipient;
@@ -30,7 +29,7 @@ public class NotificationService {
       MimeMessage mimeMessage = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-      helper.setFrom(from);
+      helper.setFrom(mailProperties.getUsername());
       helper.setTo(recipient);
       helper.setSubject("Изменение статуса задачи #" + message.id());
 
@@ -54,7 +53,7 @@ public class NotificationService {
   // Простое уведомление
   public void sendSimpleNotification(TaskStatusMessage message) {
     SimpleMailMessage email = new SimpleMailMessage();
-    email.setFrom(from);
+    email.setFrom(mailProperties.getUsername());
     email.setTo(recipient);
     email.setSubject("Изменение статуса задачи #" + message.id());
     email.setText(

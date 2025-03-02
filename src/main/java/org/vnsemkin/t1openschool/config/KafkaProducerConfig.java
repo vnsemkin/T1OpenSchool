@@ -3,6 +3,7 @@ package org.vnsemkin.t1openschool.config;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,11 @@ public class KafkaProducerConfig {
 
   @Value("${spring.kafka.bootstrap-servers}")
   private String bootstrapServers;
+
+  @Bean
+  public NewTopic taskStatusTopic(@Value("${spring.kafka.topic}") String topicName) {
+    return new NewTopic(topicName, 3, (short) 1);
+  }
 
   @Bean
   public Map<String, Object> producerConfigs() {
