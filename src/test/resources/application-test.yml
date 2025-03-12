@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: T1OpenSchool-Test
+
+  datasource:
+    # Переопределяем datasource
+    url: jdbc:tc:postgresql:17:///testdb
+    username: test
+    password: test
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog.yml
+
+  # Выключаем KAFKA.
+app:
+  kafka:
+    enabled:: false

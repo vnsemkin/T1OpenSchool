@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.vnsemkin.t1openschool.model.ErrorResponse;
@@ -54,5 +55,13 @@ public class GlobalExceptionHandler {
   public ErrorResponse handleInvalidTaskStatusException(InvalidTaskStatusException ex) {
     log.error(INVALID_TASK_STATUS, ex.getMessage());
     return new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+  }
+
+  @ExceptionHandler(HttpMessageConversionException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorResponse handleHttpMessageConversionException(HttpMessageConversionException ex) {
+    log.error("Ошибка разбора JSON: {}", ex.getMessage());
+    return new ErrorResponse(
+        "Ошибка формата данных: " + ex.getMessage(), HttpStatus.BAD_REQUEST.value());
   }
 }
