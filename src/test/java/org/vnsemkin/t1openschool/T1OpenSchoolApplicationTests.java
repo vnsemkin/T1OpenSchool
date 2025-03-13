@@ -1,13 +1,8 @@
 package org.vnsemkin.t1openschool;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-class T1OpenSchoolApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
-
-}
+@SpringBootTest()
+@ActiveProfiles("test")
+public class T1OpenSchoolApplicationTests {}

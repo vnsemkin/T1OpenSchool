@@ -7,6 +7,8 @@ plugins {
 group = 'org.vnsemkin'
 version = '0.0.1-SNAPSHOT'
 
+def TESTCONTAINERS_VERSION= '1.20.6'
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
@@ -49,7 +51,14 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     // Тестирование
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Test containers
+    testImplementation "org.testcontainers:postgresql:$TESTCONTAINERS_VERSION"
+    testImplementation "org.testcontainers:junit-jupiter:$TESTCONTAINERS_VERSION"
+    testImplementation "org.testcontainers:testcontainers:$TESTCONTAINERS_VERSION"
 }
 
 tasks.named('test') {

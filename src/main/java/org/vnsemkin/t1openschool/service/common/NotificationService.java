@@ -47,6 +47,9 @@ public class NotificationService {
       log.info("Email sent for task id: {} with new status: {}", message.id(), message.status());
     } catch (MessagingException e) {
       log.error("Failed to send email notification for task: {}", message.id(), e);
+    } catch (Exception e) {
+      // Добавляем обработку остальных типов исключений
+      log.error("Unexpected error when sending email for task: {}", message.id(), e);
     }
   }
 
